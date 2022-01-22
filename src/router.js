@@ -22,5 +22,6 @@ assetsRouter.get("/screenshot/:name", screenshot);
 counterRouter.get("/", counter.get);
 counterRouter.post("/", counter.set);
 counterRouter.delete("/", counter.reset );
+counterRouter.get("/ips", counter.getIPs );
 
 module.exports = { assets: assetsRouter, counter: counterRouter };

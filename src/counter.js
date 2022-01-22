@@ -29,7 +29,11 @@ class Counter {
     res.json(this.counterRecords);
   };
 
-  reset = (req, res) => {
+  getIPs = (_req, res) => {
+    res.json(this.ips);
+  };
+
+  reset = (_req, res) => {
     this.resetCuonter();
     res.json(this.counterRecords);
   };
