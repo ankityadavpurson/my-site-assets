@@ -1,31 +1,17 @@
 const express = require("express");
-const path = require("path");
+const logger = require("morgan");
+
+const hostName = require("./src/host");
+const { assets, counter } = require("./src/router");
+const { home } = require("./src/templates");
+
 const app = express();
-const router = express.Router();
 
-app.use(
-  "/assets",
-  router.get("/wallpaper/:name", function (req, res) {
-    const wallpaperPath = path.join(
-      __dirname,
-      "/assets/wallpapers/",
-      req.params.name
-    );
-    res.download(wallpaperPath);
-  })
-);
+app.use(logger("dev"));
 
-app.use(
-  "/assets",
-  router.get("/screenshot/:name", function (req, res) {
-    const screenshotPath = path.join(
-      __dirname,
-      "/assets/screenshots/",
-      req.params.name
-    );
-    res.download(screenshotPath);
-  })
-);
+app.get("/", home);
+app.use("/assets", assets);
+app.use("/counter", counter);
 
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`listening on http://localhost:${port}`));
+app.listen(port, hostName(port));
