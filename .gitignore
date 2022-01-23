@@ -1,20 +1,5 @@
-#post - request
-/post
-
-#dist
-/dist
-
-#note file
-/apilist.txt
-
-#nodemon
-/nodemon.json
-
 #devServer
-*/devServer.ts
-
-#temp
-/temp
+devServer.js
 
 #vscode
 /.vscode
