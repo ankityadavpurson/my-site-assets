@@ -8,68 +8,54 @@ const CounterModel = mongoose.model("counter", {
 
 // const counterModel = new CounterModel({ hits: 0, visitors: 0, ips: [] });
 // counterModel.save().then((counter) => console.log("done", { counter }));
-const docId = "61ec5e583f3ae68bcef73c84";
 
 class Counter {
-  counterRecords = {
-    hits: 0,
-    visitors: 0,
-    ips: [],
+  docId = process.env.COUNTER_DOC_ID;
+
+  get = async (_req, res) => {
+    const counterDoc = await CounterModel.findById(this.docId);
+    const { hits, visitors } = counterDoc;
+    res.json({ hits, visitors });
   };
 
-  constructor() {
-    CounterModel.findById(docId).then((counterDoc) => {
-      const { hits, visitors, ips } = counterDoc._doc;
-      this.counterRecords = { ...this.counterRecords, hits, visitors, ips };
-    });
-  }
+  set = async (req, res) => {
+    try {
+      const ip = req.ip;
 
-  count = (ip) => {
-    this.counterRecords.hits++;
-    if (this.counterRecords.ips.indexOf(ip) === -1) {
-      this.counterRecords.ips.push(ip);
-      this.counterRecords.visitors = this.counterRecords.ips.length;
+      const counterDoc = await CounterModel.findById(this.docId);
+      const addIP = counterDoc.ips.indexOf(ip) === -1;
+
+      await CounterModel.findByIdAndUpdate(
+        this.docId,
+        addIP
+          ? { $push: { ips: ip }, $inc: { hits: 1, visitors: 1 } }
+          : { $inc: { hits: 1 } }
+      );
+      res.status(200).send("Success");
+    } catch (error) {
+      // console.log(error);
+      res.status(500).send("Internal Server Error");
     }
-    this.updateDB();
   };
 
-  resetCuonter = () => {
-    this.counterRecords.hits = 0;
-    this.counterRecords.visitors = 0;
-    this.counterRecords.ips = [];
-    this.updateDB();
+  getIPs = async (_req, res) => {
+    const counterDoc = await CounterModel.findById(this.docId);
+    res.json(counterDoc.ips);
   };
 
-  get = (_req, res) => {
-    const { hits, visitors } = this.counterRecords;
-    res.json({ hits, visitors });
+  reset = async (_req, res) => {
+    try {
+      await CounterModel.findByIdAndUpdate(this.docId, {
+        hits: 0,
+        visitors: 0,
+        ips: [],
+      });
+      res.status(200).send("Deleted");
+    } catch (error) {
+      // console.log(error);
+      res.status(500).send("Internal Server Error");
+    }
   };
-
-  set = (req, res) => {
-    this.count(req.ip);
-    const { hits, visitors } = this.counterRecords;
-    res.json({ hits, visitors });
-  };
-
-  getIPs = (_req, res) => {
-    const { ips } = this.counterRecords;
-    res.json(ips);
-  };
-
-  reset = (_req, res) => {
-    this.resetCuonter();
-    const { hits, visitors } = this.counterRecords;
-    res.json({ hits, visitors });
-  };
-
-  updateDB() {
-    const { hits, visitors, ips } = this.counterRecords;
-    CounterModel.updateOne({ id: docId }, { hits, visitors, ips })
-      .then((_doc) => {
-        // console.log(_doc);
-      })
-      .catch((err) => console.log(err));
-  }
 }
 
 const counter = new Counter();
