@@ -15,11 +15,13 @@ assetsRouter.get("/", template.assets);
 
 // wallpaper
 assetsRouter.get("/wallpaper", template.wallpaper);
-assetsRouter.get("/wallpaper/:name", wallpaper);
+assetsRouter.get("/wallpapers", wallpaper.list);
+assetsRouter.get("/wallpaper/:name", wallpaper.getOne);
 
 // screenshot
 assetsRouter.get("/screenshot", template.screenshot);
-assetsRouter.get("/screenshot/:name", screenshot);
+assetsRouter.get("/screenshots", screenshot.list);
+assetsRouter.get("/screenshot/:name", screenshot.getOne);
 
 // counter
 counterRouter.post("/", counter.set);
