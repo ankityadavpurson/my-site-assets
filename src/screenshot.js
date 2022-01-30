@@ -8,7 +8,7 @@ const getOne = (req, res) => {
   res.download(screenshotPath);
 };
 
-const list = (req, res) => {
+const list = (_req, res) => {
   const folders = fs.readdirSync(`./assets/screenshots`);
   res.json(folders);
 };

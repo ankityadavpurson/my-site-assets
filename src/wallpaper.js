@@ -8,7 +8,7 @@ const getOne = (req, res) => {
   res.download(wallpaperPath);
 };
 
-const list = (req, res) => {
+const list = (_req, res) => {
   const folders = fs.readdirSync(`./assets/wallpapers`);
   res.json(folders);
 };
