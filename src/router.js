@@ -2,6 +2,7 @@ const express = require("express");
 
 const assetsRouter = express.Router();
 const counterRouter = express.Router();
+const visitorEntryRouter = express.Router();
 
 const authenticate = require("./authenticate");
 
@@ -9,6 +10,7 @@ const screenshot = require("./screenshot");
 const wallpaper = require("./wallpaper");
 const template = require("./templates");
 const counter = require("./counter");
+const visitorEntry = require("./visitor-entry");
 
 // assets
 assetsRouter.get("/", template.assets);
@@ -30,4 +32,11 @@ counterRouter.get("/", counter.get);
 counterRouter.delete("/", counter.reset);
 counterRouter.get("/ips", counter.getIPs);
 
-module.exports = { assets: assetsRouter, counter: counterRouter };
+//visitor-entry
+visitorEntryRouter.post("/", visitorEntry.add);
+
+module.exports = {
+  assets: assetsRouter,
+  counter: counterRouter,
+  visitorEntry: visitorEntryRouter,
+};
