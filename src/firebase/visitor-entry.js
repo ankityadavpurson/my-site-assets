@@ -1,7 +1,7 @@
 const firestore = require(".");
 
-async function add(entry) {
+async function addNewEntry(entry) {
   await firestore.collection("form-entries").add(entry);
 }
 
-module.exports = { add };
+module.exports = { addNewEntry };
