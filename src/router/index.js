@@ -4,7 +4,7 @@ const assetsRouter = express.Router();
 const counterRouter = express.Router();
 const visitorEntryRouter = express.Router();
 
-const authenticate = require("./authenticate");
+const authenticate = require("../utils/authenticate");
 
 const screenshot = require("./screenshot");
 const wallpaper = require("./wallpaper");

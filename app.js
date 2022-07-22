@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const { assets, counter, visitorEntry } = require("./src/router");
-const { home } = require("./src/templates");
+const { home } = require("./src/router/templates");
 const dbConnect = require("./src/utils/db");
 
 const app = express();

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const main = require("./html-templates/main");
+const main = require("../html-templates/main");
 
 const home = (req, res) => {
   res.send(
