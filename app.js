@@ -1,5 +1,4 @@
 const express = require("express");
-const logger = require("morgan");
 const cors = require("cors");
 
 const { assets, counter, visitorEntry } = require("./src/router");
@@ -14,7 +13,10 @@ const ORIGINS = JSON.parse(process.env.ORIGINS || "*");
 app.use(cors({ origin: ORIGINS }));
 
 const DEV = process.env.DEV === "1";
-if (DEV) app.use(logger("dev"));
+if (DEV) {
+  const logger = require("morgan");
+  app.use(logger("dev"));
+}
 
 app.get("/", home);
 app.use("/assets", assets);
